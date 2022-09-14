@@ -17,7 +17,7 @@ import {CustomButton, CustomInput} from '../Components';
 
 const LogInScreen = ({navigation}) => {
   const [inputs, setInputs] = React.useState({
-    email: '',
+    username: '',
     password: '',
   });
   const [errors, setErrors] = React.useState({});
@@ -25,15 +25,25 @@ const LogInScreen = ({navigation}) => {
   const validate = () => {
     Keyboard.dismiss();
     let valid = true;
-    let regec = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$';
-    if (!inputs.email) {
-      handleError('Please input email', 'email');
+    // let regec = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$';
+    // if (!inputs.email) {
+    //   handleError('Please input email', 'email');
+    //   valid = false;
+    // } else if (!inputs.email.match(regec)) {
+    //   handleError('Please input a valid email', 'email');
+    //   valid = false;
+    // }
+
+    if (!inputs.username) {
+      handleError(
+        'Please input  your username \n \nShould contain one letter, one number and be at least 8 characters long',
+        'username',
+      );
       valid = false;
-    } else if (!inputs.email.match(regec)) {
-      handleError('Please input a valid email', 'email');
+    } else if (inputs.username < 8) {
+      handleError('Min Password length of 8', 'username');
       valid = false;
     }
-
     if (!inputs.password) {
       handleError(
         'Please input password \n \nShould contain one letter, one number and be at least 8 characters long',
@@ -110,11 +120,11 @@ const LogInScreen = ({navigation}) => {
             </Text>
             <View style={styles.input}>
               <CustomInput
-                label="Email or Phone"
-                onChangeText={text => handleOnChange(text, 'email')}
-                error={errors.email}
+                label="Username"
+                onChangeText={text => handleOnChange(text, 'username')}
+                error={errors.username}
                 onFocus={() => {
-                  handleError(null, 'email');
+                  handleError(null, 'username');
                 }}
               />
 

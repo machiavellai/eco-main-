@@ -16,6 +16,8 @@ import {CustomButton, CustomInput} from '../Components';
 
 const SetUp = ({navigation}) => {
   const [inputs, setInputs] = React.useState({
+    username: '',
+    email: '',
     password: '',
   });
   const [errors, setErrors] = React.useState({});
@@ -23,6 +25,15 @@ const SetUp = ({navigation}) => {
   const validate = () => {
     Keyboard.dismiss();
     let valid = true;
+    let regec = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$';
+
+    if (!inputs.email) {
+      handleError('Please input email', 'email');
+      valid = false;
+    } else if (!inputs.email.match(regec)) {
+      handleError('Please input a valid email', 'email');
+      valid = false;
+    }
 
     if (!inputs.password) {
       handleError(
@@ -32,6 +43,17 @@ const SetUp = ({navigation}) => {
       valid = false;
     } else if (inputs.password < 8) {
       handleError('Min Password length of 8', 'password');
+      valid = false;
+    }
+
+    if (!inputs.username) {
+      handleError(
+        'Please input a username\n \nShould contain one letter, one number and be at least 8 characters long',
+        'username',
+      );
+      valid = false;
+    } else if (inputs.username < 8) {
+      handleError('Min Password length of 8', 'username');
       valid = false;
     }
 
@@ -70,25 +92,41 @@ const SetUp = ({navigation}) => {
             <Text style={styles.powered}>Powered by Ecobank Group</Text>
           </View>
           <View style={styles.body}>
-            <Text style={styles.header}>SetUp Password</Text>
+            <Text style={styles.header}>Register Yourself!</Text>
             <Text style={styles.subtitle}>
-              Kindly choose a password that you can remember
+              Kindly input details to register.
             </Text>
             <View style={styles.input}>
-              <CustomInput
+              {/* <CustomInput
                 label="Password"
                 onChangeText={text => handleOnChange(text, 'email890')}
                 error={errors.password}
                 onFocus={() => {
                   handleError(null, 'email');
                 }}
-              />
+              /> */}
               {/* <Text>
                 Should contain one letter, one number and be at least 8
                 characters long
               </Text> */}
               <CustomInput
-                label="Password Confirmation"
+                label="Email or Phone"
+                onChangeText={text => handleOnChange(text, 'email')}
+                error={errors.email}
+                onFocus={() => {
+                  handleError(null, 'email');
+                }}
+              />
+              <CustomInput
+                label="Username"
+                error={errors.username}
+                onChangeText={text => handleOnChange(text, 'username')}
+                onFocus={() => {
+                  handleError(null, 'username');
+                }}
+              />
+              <CustomInput
+                label="Password"
                 error={errors.password}
                 onChangeText={text => handleOnChange(text, 'password')}
                 onFocus={() => {
