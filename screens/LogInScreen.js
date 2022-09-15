@@ -17,7 +17,7 @@ import {CustomButton, CustomInput} from '../Components';
 
 const LogInScreen = ({navigation}) => {
   const [inputs, setInputs] = React.useState({
-    username: '',
+    userName: '',
     password: '',
   });
   const [errors, setErrors] = React.useState({});
@@ -25,23 +25,15 @@ const LogInScreen = ({navigation}) => {
   const validate = () => {
     Keyboard.dismiss();
     let valid = true;
-    // let regec = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$';
-    // if (!inputs.email) {
-    //   handleError('Please input email', 'email');
-    //   valid = false;
-    // } else if (!inputs.email.match(regec)) {
-    //   handleError('Please input a valid email', 'email');
-    //   valid = false;
-    // }
 
-    if (!inputs.username) {
+    if (!inputs.userName) {
       handleError(
         'Please input  your username \n \nShould contain one letter, one number and be at least 8 characters long',
-        'username',
+        'userName',
       );
       valid = false;
-    } else if (inputs.username < 8) {
-      handleError('Min Password length of 8', 'username');
+    } else if (inputs.userName < 8) {
+      handleError('Min Password length of 8', 'userName');
       valid = false;
     }
     if (!inputs.password) {
@@ -55,14 +47,85 @@ const LogInScreen = ({navigation}) => {
       valid = false;
     }
 
-    if (valid) {
-      navigation.navigate('Get Started');
+    try {
+      // const values = {
+      //   userName: 'Oyindamola',
+      //   email: 'oyindamola20@gmail.com',
+      //   password: 'oyindamola',
+      // };
+      // console.log('values', values);
+      var InsertAPIURL = 'https://onboarding-app-1.herokuapp.com/staff/login';
+      var headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      };
+      fetch(InsertAPIURL, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(inputs),
+      })
+        .then(response => {
+          const d = response.json();
+          console.log(d, 'here');
+          return d;
+        })
+        .then(response => {
+          const {message} = response;
+          if (message == 'Thank you for registering') {
+            console.log(message);
+            console.log(response);
+          }
+          if (valid) {
+            // register();
+            navigation.navigate('Get Started');
+          }
+          alert(message);
+          console.log(response);
+          console.log(inputs);
+        })
+        .catch(e => console.log(e, 'error'));
+    } catch (error) {
+      console.log(error);
+      // alert('Error Occured' + ErrorMessage);
     }
-  };
 
-  // const register = () => {
-  //   setLoading(true);
-  // };
+    // if (valid) {
+    //   navigation.navigate('Get Started');
+
+    //   try {
+    //     console.log(values, 'values');
+    //     var InsertAPIURL = 'https://onboarding-app-1.herokuapp.com/staff/login';
+    //     var headers = {
+    //       Accept: 'application/json',
+    //       'Content-Type': 'application/json',
+    //     };
+    //     fetch(InsertAPIURL, {
+    //       method: 'POST',
+    //       headers: headers,
+    //       body: JSON.stringify(values),
+    //     })
+    //       .then(response => {
+    //         const d = response.json();
+    //         console.log(d, 'here');
+    //         return d;
+    //       })
+    //       .then(response => {
+    //         const {message} = response;
+    //         if (message == 'email taken') {
+    //           console.log(message);
+    //           console.log(response);
+    //         }
+
+    //         alert(message);
+    //         console.log(response);
+    //       })
+    //       .catch(e => console.log(e, 'error'));
+    //   } catch (error) {
+    //     console.log(error);
+    //     alert('Error Occured' + ErrorMessage);
+    //   }
+    // }
+  };
 
   const handleOnChange = (text, input) => {
     setInputs(prevState => ({...prevState, [input]: text}));
@@ -77,7 +140,7 @@ const LogInScreen = ({navigation}) => {
   //     headers: { 'Content-Type': 'application/json' },
   //     body: JSON.stringify(
   //       {
-  //         username: 'maemunah',
+  //         username: '',
   //         password: 'Machiavelli09'
   //        })
   // };
@@ -121,10 +184,10 @@ const LogInScreen = ({navigation}) => {
             <View style={styles.input}>
               <CustomInput
                 label="Username"
-                onChangeText={text => handleOnChange(text, 'username')}
-                error={errors.username}
+                onChangeText={text => handleOnChange(text, 'userName')}
+                error={errors.userName}
                 onFocus={() => {
-                  handleError(null, 'username');
+                  handleError(null, 'userName');
                 }}
               />
 

@@ -16,7 +16,7 @@ import {CustomButton, CustomInput} from '../Components';
 
 const SetUp = ({navigation}) => {
   const [inputs, setInputs] = React.useState({
-    username: '',
+    userName: '',
     email: '',
     password: '',
   });
@@ -46,20 +46,58 @@ const SetUp = ({navigation}) => {
       valid = false;
     }
 
-    if (!inputs.username) {
+    if (!inputs.userName) {
       handleError(
         'Please input a username\n \nShould contain one letter, one number and be at least 8 characters long',
         'username',
       );
       valid = false;
-    } else if (inputs.username < 8) {
-      handleError('Min Password length of 8', 'username');
+    } else if (inputs.userName < 8) {
+      handleError('Min Password length of 8', 'userName');
       valid = false;
     }
 
-    if (valid) {
-      // register();
-      navigation.navigate('LogInScreen');
+    try {
+      // const values = {
+      //   userName: 'Oyindamola',
+      //   email: 'oyindamola20@gmail.com',
+      //   password: 'oyindamola',
+      // };
+      // console.log('values', values);
+      var InsertAPIURL =
+        'https://onboarding-app-1.herokuapp.com/staff/register';
+      var headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      };
+      fetch(InsertAPIURL, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(inputs),
+      })
+        .then(response => {
+          const d = response.json();
+          console.log(d, 'here');
+          return d;
+        })
+        .then(response => {
+          const {message} = response;
+          if (message == 'Thank you for registering') {
+            console.log(message);
+            console.log(response);
+          }
+          if (valid) {
+            // register();
+            navigation.navigate('LogInScreen');
+          }
+          alert(message);
+          console.log(response);
+          console.log(inputs);
+        })
+        .catch(e => console.log(e, 'error'));
+    } catch (error) {
+      console.log(error);
+      // alert('Error Occured' + ErrorMessage);
     }
   };
 
@@ -119,10 +157,10 @@ const SetUp = ({navigation}) => {
               />
               <CustomInput
                 label="Username"
-                error={errors.username}
-                onChangeText={text => handleOnChange(text, 'username')}
+                error={errors.userName}
+                onChangeText={text => handleOnChange(text, 'userName')}
                 onFocus={() => {
-                  handleError(null, 'username');
+                  handleError(null, 'userName');
                 }}
               />
               <CustomInput
