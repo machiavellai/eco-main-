@@ -58,12 +58,7 @@ const SetUp = ({navigation}) => {
     }
 
     try {
-      // const values = {
-      //   userName: 'Oyindamola',
-      //   email: 'oyindamola20@gmail.com',
-      //   password: 'oyindamola',
-      // };
-      // console.log('values', values);
+      
       var InsertAPIURL =
         'https://onboarding-app-1.herokuapp.com/staff/register';
       var headers = {

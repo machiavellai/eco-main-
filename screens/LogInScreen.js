@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
+import { useState } from 'react';
 import {
   View,
   Text,
@@ -14,12 +15,14 @@ import {
 } from 'react-native';
 import {images, colors} from '../constants';
 import {CustomButton, CustomInput} from '../Components';
+import {secureGet, secureSave} from '../External Variable/Storage';
 
 const LogInScreen = ({navigation}) => {
   const [inputs, setInputs] = React.useState({
     userName: '',
     password: '',
   });
+  const [tok, setToke] = useState('');
   const [errors, setErrors] = React.useState({});
 
   const validate = () => {
@@ -69,12 +72,17 @@ const LogInScreen = ({navigation}) => {
           console.log(d, 'here');
           return d;
         })
-        .then(response => {
+        .then(async response => {
           const {message} = response;
+          const token = response.token;
+          console.log('hello', token);
+          secureSave('token', token);
           if (message == 'Thank you for registering') {
             console.log(message);
             console.log(response);
           }
+          secureGet('token', setToke);
+          console.log('hello2', tok);
           if (valid) {
             // register();
             navigation.navigate('Get Started');
@@ -88,43 +96,6 @@ const LogInScreen = ({navigation}) => {
       console.log(error);
       // alert('Error Occured' + ErrorMessage);
     }
-
-    // if (valid) {
-    //   navigation.navigate('Get Started');
-
-    //   try {
-    //     console.log(values, 'values');
-    //     var InsertAPIURL = 'https://onboarding-app-1.herokuapp.com/staff/login';
-    //     var headers = {
-    //       Accept: 'application/json',
-    //       'Content-Type': 'application/json',
-    //     };
-    //     fetch(InsertAPIURL, {
-    //       method: 'POST',
-    //       headers: headers,
-    //       body: JSON.stringify(values),
-    //     })
-    //       .then(response => {
-    //         const d = response.json();
-    //         console.log(d, 'here');
-    //         return d;
-    //       })
-    //       .then(response => {
-    //         const {message} = response;
-    //         if (message == 'email taken') {
-    //           console.log(message);
-    //           console.log(response);
-    //         }
-
-    //         alert(message);
-    //         console.log(response);
-    //       })
-    //       .catch(e => console.log(e, 'error'));
-    //   } catch (error) {
-    //     console.log(error);
-    //     alert('Error Occured' + ErrorMessage);
-    //   }
-    // }
   };
 
   const handleOnChange = (text, input) => {
@@ -133,34 +104,6 @@ const LogInScreen = ({navigation}) => {
   const handleError = (errorMessage, input) => {
     setErrors(prevState => ({...prevState, [input]: errorMessage}));
   };
-
-  //   //Login Logic
-  //   const requestOptions = {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(
-  //       {
-  //         username: '',
-  //         password: 'Machiavelli09'
-  //        })
-  // };
-
-  // const postLogin = async () => {
-  //     try {
-  //         await fetch(
-  //             'https://reqres.in/api/posts', requestOptions)
-  //             .then(response => {
-  //                 response.json()
-  //                     .then(data => {
-  //                         Alert.alert("Post created at : ",
-  //                         data.createdAt);
-  //                     });
-  //             })
-  //     }
-  //     catch (error) {
-  //         console.log(error);
-  //     }
-  // }
 
   return (
     // eslint-disable-next-line react-native/no-inline-styles
