@@ -1,14 +1,14 @@
  import  AsyncStorage  from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import * as Keychain from 'expo-secure-store';
+import * as SecureStore from 'expo-secure-store';
 
 
 
 export async function secureSave(key: string, value: any) {
-    await Keychain.setItemAsync(key, value);
+    await SecureStore.setItemAsync(key, value);
   }
   export async function secureGet(key: string, funcTodo: any) {
-    const result = await Keychain.getItemAsync(key);
+    const result = await SecureStore.getItemAsync(key);
     if (funcTodo != null) {
       funcTodo(result);
     }
@@ -20,7 +20,7 @@ export async function secureSave(key: string, value: any) {
     }
   }
   export async function secureDelete(key: string) {
-    await Keychain.deleteItemAsync(key);
+    await SecureStore.deleteItemAsync(key);
   }
   
   export const storeLocal = async (key: string, data: any) => {
@@ -31,10 +31,13 @@ export async function secureSave(key: string, value: any) {
     }
   };
   
-  export const getLocal = async (key: string) => {
+  export const getLocal = async (key: string, funcTodo: any) => {
     try {
       await AsyncStorage.getItem(key).then((data: any) => {
-        // console.log(data);
+        if (funcTodo != null) {
+          funcTodo(data);
+        }
+        console.log(data,'data');
         return data;
       });
     } catch (error) {

@@ -1,11 +1,9 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { useState } from 'react';
+import {useState} from 'react';
 import {
   View,
   Text,
-  Image,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -15,7 +13,12 @@ import {
 } from 'react-native';
 import {images, colors} from '../constants';
 import {CustomButton, CustomInput} from '../Components';
-import {secureGet, secureSave} from '../External Variable/Storage';
+import {
+  secureGet,
+  secureSave,
+  storeLocal,
+  getLocal,
+} from '../External Variable/Storage';
 
 const LogInScreen = ({navigation}) => {
   const [inputs, setInputs] = React.useState({
@@ -25,7 +28,7 @@ const LogInScreen = ({navigation}) => {
   const [tok, setToke] = useState('');
   const [errors, setErrors] = React.useState({});
 
-  const validate = () => {
+  const validate = async () => {
     Keyboard.dismiss();
     let valid = true;
 
@@ -51,18 +54,12 @@ const LogInScreen = ({navigation}) => {
     }
 
     try {
-      // const values = {
-      //   userName: 'Oyindamola',
-      //   email: 'oyindamola20@gmail.com',
-      //   password: 'oyindamola',
-      // };
-      // console.log('values', values);
       var InsertAPIURL = 'https://onboarding-app-1.herokuapp.com/staff/login';
       var headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       };
-      fetch(InsertAPIURL, {
+      await fetch(InsertAPIURL, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(inputs),
@@ -72,29 +69,27 @@ const LogInScreen = ({navigation}) => {
           console.log(d, 'here');
           return d;
         })
-        .then(async response => {
+        .then(response => {
           const {message} = response;
           const token = response.token;
           console.log('hello', token);
-          secureSave('token', token);
-          if (message == 'Thank you for registering') {
-            console.log(message);
-            console.log(response);
-          }
-          secureGet('token', setToke);
-          console.log('hello2', tok);
+          storeLocal('token', token);
+
+          // console.log(message);
+          // console.log(response);
+
           if (valid) {
             // register();
             navigation.navigate('Get Started');
           }
-          alert(message);
-          console.log(response);
-          console.log(inputs);
+
+          getLocal('token', setToke);
+          console.log('hello2', tok);
         })
         .catch(e => console.log(e, 'error'));
     } catch (error) {
       console.log(error);
-      // alert('Error Occured' + ErrorMessage);
+      2;
     }
   };
 

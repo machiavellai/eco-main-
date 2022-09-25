@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -17,24 +17,86 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
+import {getLocal} from '../External Variable/Storage';
+import axios from 'axios';
 const HomeScreen = ({navigation}) => {
   const [toggle, setToggle] = useState(false);
   const [toggle2, setToggle2] = useState(false);
   const [toggle3, setToggle3] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [tok, setToke] = useState('');
+
+  useEffect(() => {
+    const getProfile = async () => {
+      try {
+        getLocal('token', setToke);
+        // const values = {jambNo: '20302030'};
+        console.log('tojen', tok);
+        var InsertAPIURL =
+          'https://onboarding-app-1.herokuapp.com/staff/profile';
+        var headers = {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + tok,
+          // 'x-client-id' : 'qdfsyrtiyjtyfdrrtyfhr5ui7ytjh',
+          // 'x-client-secret':'ewrwut79u0ypoiufuyuiyutiogiuytuyr',
+          // 'x-source-code':'TEST'
+        };
+        await axios({
+          method: 'get',
+          url: InsertAPIURL,
+          headers: headers,
+        })
+          .then(response => {
+            console.log(response.data);
+            setMessage(response.data);
+            console.log('m', message);
+          })
+
+          // fetch(InsertAPIURL, {
+          //   method: 'GET',
+          //   headers: headers,
+          //   // body: JSON.stringify(values), //convert data to JSON
+          // })
+          // .then(response => {
+          //   // console.log('this is where =>', response);
+          //   const d = response?.json();
+          //   // console.log('gunter', d);
+          //   return d;
+          // }) //check response type of API (CHECK OUTPUT OF DATA IS IN JSON)
+          // .then(response => {
+          //   console.log('turk', response);
+          //   // const d = response.json();
+          //   // console.log(d, 'here');
+          //   setMessage(response);
+          //   console.log('m', message);
+          //   // console.log(response);
+
+          //   // if (message == "Password successfully Reset") {
+          //   //     console.log("true")
+          // })
+          .catch(e => console.log(e, 'error'));
+      } catch (error) {
+        console.log(error);
+        alert('Error Occured');
+      }
+    };
+    getProfile();
+  }, [tok]);
+
   return (
     <SafeAreaView style={styles.SafeAreaViewContainer}>
       <View style={styles.headerContainer}>
-        <Icon name="menu" size={24} color="#4385B7" />
+        {/* <Icon name="menu" size={24} color="#4385B7" /> */}
         <View style={styles.headerTxtWelcome}>
-          <Text style={styles.headerWelcome}>Welcome Abose</Text>
-          <Text style={styles.subHeaderWelcome}>Mayowa17355@gmail.com</Text>
+          <Text style={styles.headerWelcome}>Welcome: {message?.userName}</Text>
+          <Text style={styles.subHeaderWelcome}>{message?.email}</Text>
         </View>
         <TouchableOpacity>
           <Image
-            source={images.profile_photo}
+            source={images.user_photo2}
             style={styles.profilePhoto}
-            resizeMode="contain"
+            // resizeMode="contain"
           />
         </TouchableOpacity>
       </View>
@@ -237,8 +299,7 @@ const HomeScreen = ({navigation}) => {
                     </Text>
                   </View>
                   <View style={{marginLeft: 40}}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('Contact')}>
+                    <TouchableOpacity onPress={() => navigation.navigate()}>
                       <Ionicons
                         name="ios-chevron-forward-sharp"
                         size={20}
@@ -302,7 +363,7 @@ const HomeScreen = ({navigation}) => {
                   </View>
                   <View style={{marginLeft: 40}}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('ReceiptAcknowledge')}>
+                      onPress={() => navigation.navigate('Contact')}>
                       <Ionicons
                         name="ios-chevron-forward-sharp"
                         size={20}
@@ -381,11 +442,14 @@ const HomeScreen = ({navigation}) => {
                     <Text style={styles.progressTxtsub}>Finished</Text>
                   </View>
                   <View style={{marginLeft: 40}}>
-                    <Ionicons
-                      name="ios-chevron-forward-sharp"
-                      size={20}
-                      color="#A0A0A0"
-                    />
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('AddressForm')}>
+                      <Ionicons
+                        name="ios-chevron-forward-sharp"
+                        size={20}
+                        color="#A0A0A0"
+                      />
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -659,9 +723,9 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     justifyContent: 'space-between',
   },
-  headerTxtWelcome: {marginLeft: 30},
+  headerTxtWelcome: {marginLeft: 25},
   headerWelcome: {
-    fontSize: 18,
+    fontSize: 13,
     color: colors.headerTxt,
     fontFamily: 'Roboto-Bold',
     textAlign: 'center',
@@ -673,7 +737,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   profilePhoto: {
-    height: 30,
+    height: 40,
   },
   idCardContainer: {
     padding: 15,

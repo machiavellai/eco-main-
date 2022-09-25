@@ -1,12 +1,23 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const ForgotPassword = () => {
+const ForgotPassword = ({navigation}) => {
+  const pressHandler = () => {
+    navigation.navigate('LogInScreen');
+  };
   return (
     <View style={styles.container}>
-      <Ionicons name="chevron-back-sharp" size={24} color="#4385B7" />
+      <TouchableOpacity onPress={pressHandler}>
+        <Ionicons name="chevron-back-sharp" size={24} color="#4385B7" />
+      </TouchableOpacity>
       <Text style={styles.paragraph}>Forgot Password</Text>
       <Text style={styles.subtitle}>
         Enter your email to reset your password

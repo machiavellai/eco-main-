@@ -58,7 +58,6 @@ const SetUp = ({navigation}) => {
     }
 
     try {
-      
       var InsertAPIURL =
         'https://onboarding-app-1.herokuapp.com/staff/register';
       var headers = {

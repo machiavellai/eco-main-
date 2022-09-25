@@ -1,7 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, {useState} from 'react';
-import {View, Text, Modal, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  Modal,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {images, colors} from '../constants';
 
 const ModalPopUp = ({visible, children}) => {
@@ -62,19 +69,21 @@ const ModalO = ({navigation, imgSource, onPress = () => {}}) => {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ModalPopUp visible={visible}>
-        <View style={{alignItems: 'center'}}>
-          <Text style={{alignItems: 'center', fontSize: 15}}>
-            {pageContent[page].header}
-          </Text>
-          <Text style={{color: colors.subGrey, fontSize: 10}}>
-            {pageContent[page].text}
-          </Text>
-          <Image
-            source={pageContent[page].imageSrc}
-            style={{width: '80%', height: 150, marginTop: 30}}
-          />
-        </View>
+        <TouchableOpacity>
+          <View style={{alignItems: 'center'}}>
+            <Text style={{alignItems: 'center', fontSize: 15}}>
+              {pageContent[page].header}
+            </Text>
+            <Text style={{color: colors.subGrey, fontSize: 10}}>
+              {pageContent[page].text}
+            </Text>
 
+            <Image
+              source={pageContent[page].imageSrc}
+              style={{width: '80%', height: 150, marginTop: 30}}
+            />
+          </View>
+        </TouchableOpacity>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text
             style={{

@@ -7,6 +7,7 @@ import LicenseAgreement from './licenseAgreement';
 import ModalO from './modal';
 import HomeScreen from './homeScreen';
 import LogInScreen from './LogInScreen';
+import ThankYou from './ThankYouScreen'
 
 export {
   OnboardingScreen,
@@ -17,4 +18,5 @@ export {
   ModalO,
   HomeScreen,
   LogInScreen,
+  ThankYou
 };

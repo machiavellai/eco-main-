@@ -11,7 +11,7 @@ const darkBlue = '#00001c';
 
 const red = '#FF0000';
 const grey = '242424';
-const subText = '#D6D5D5';
+const subText = '#D8D8D8';
 const headerTxt = '#141414';
 const black = '#000000';
 

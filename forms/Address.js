@@ -13,40 +13,50 @@ import {
 import {CustomFileInput} from '../Components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../constants';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 import RadioGroup from 'react-native-radio-buttons-group';
 import {DropDown} from '../Components';
 
-const radioButtonsData = [
+// const radioButtonsData = [
+//   {
+//     id: '1',
+//     label: <Text style={{color: '#000000'}}>{'Male'}</Text>,
+//     value: 'option1',
+//     color: '#F7F7F7',
+//     selected: false,
+//   },
+//   {
+//     id: '2',
+//     label: <Text style={{color: '#A0A0A0'}}>{'Female'}</Text>,
+//     value: 'option2',
+//     color: '#F7F7F7',
+//     selected: false,
+//   },
+// ];
+// const maritalStatusData = [
+//   {
+//     id: '1',
+//     label: <Text style={{color: '#A0A0A0'}}>{'Yes'}</Text>,
+//     value: 'option1',
+//     color: '#F7F7F7',
+//     selected: false,
+//   },
+//   {
+//     id: '2',
+//     label: <Text style={{color: '#A0A0A0'}}>{'No'}</Text>,
+//     value: 'option2',
+//     color: '#F7F7F7',
+//     selected: false,
+//   },
+// ];
+let Sex = [
   {
-    id: '1',
-    label: <Text style={{color: '#000000'}}>{'Male'}</Text>,
-    value: 'option1',
-    color: '#F7F7F7',
-    selected: false,
+    id: 1,
+    name: 'Male',
   },
   {
-    id: '2',
-    label: <Text style={{color: '#A0A0A0'}}>{'Female'}</Text>,
-    value: 'option2',
-    color: '#F7F7F7',
-    selected: false,
-  },
-];
-const maritalStatusData = [
-  {
-    id: '1',
-    label: <Text style={{color: '#A0A0A0'}}>{'Yes'}</Text>,
-    value: 'option1',
-    color: '#F7F7F7',
-    selected: false,
-  },
-  {
-    id: '2',
-    label: <Text style={{color: '#A0A0A0'}}>{'No'}</Text>,
-    value: 'option2',
-    color: '#F7F7F7',
-    selected: false,
+    id: 2,
+    name: 'Female',
   },
 ];
 let maritalStatus = [
@@ -75,15 +85,25 @@ const Address = ({label, navigation}) => {
   const pressHandler = () => {
     navigation.navigate('Home Screen');
   };
+  const presshandler2 = () => {
+    console.log(arrOfObj);
+  };
   const [selectedItem, setSelectedItem] = useState(null);
   const onSelect = item => {
     setSelectedItem(item);
   };
+  const [clickedItem1, setClickedItem1] = useState(null);
+  const onClick1 = content => {
+    setClickedItem1(content);
+  };
 
-  const [radioButtons, setRadioButtons] = useState(radioButtonsData);
-  const [radioButton2, setRadioButtons2] = useState(maritalStatusData);
-  const [isPickerShow, setIsPickerShow] = useState(false);
-  const [date, setDate] = useState(new Date(Date.now()));
+  const [tok, setToke] = useState('');
+  const [datePicker, setDatePicker] = useState(false);
+  const [dateOfBirth, setDateOfBirth] = useState(new Date());
+
+  function showDatePicker() {
+    setDatePicker(true);
+  }
 
   function getValueofInput1() {
     console.log('Input is ' + familyName);
@@ -92,33 +112,64 @@ const Address = ({label, navigation}) => {
     setIsPickerShow(true);
   };
 
+  function OnDateSelected(event, dateOfBirth) {
+    console.log(dateOfBirth, 'Date');
+    setDateOfBirth(dateOfBirth);
+    setDatePicker(false);
+  }
   const onChange = (event, value) => {
-    setDate(value);
+    setDateOfBirth(value);
     if (Platform.OS === 'android') {
       setIsPickerShow(false);
     }
   };
-  function onPressRadioButton(radioButtonsArray) {
-    setRadioButtons(radioButtonsArray);
-  }
-  function onPressRadioButton(radioButtonsArray) {
-    setRadioButtons2(radioButtonsArray);
-  }
+  // function onPressRadioButton(radioButtonsArray) {
+  //   setRadioButtons(radioButtonsArra2y);
+  // }
+  // function onPressRadioButton(radioButtonsArray) {
+  //   setRadioButtons2(radioButtonsArray);
+  // }
 
   //TextInput
-  const [familyName, setFamilyName] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [maidenName, setMaidenName] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [placeOfBirth, setPlaceOfBirth] = useState('');
-  const [nationalityAtBirth, setNationalityAtBirth] = useState('');
+  const [permanentAddress, setPermanentAddress] = useState('');
+  const [presentAddress, setPresentAddress] = useState('');
+  const [permanentTelephone_no, setPermanentTelephone_No] = useState('');
+  const [presentTelephone_no, setPresentTelephone_No] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
   const [presentNationality, setPresentNationality] = useState('');
-  const [describe, setDescribe] = useState('');
 
+  let arrOfObj = [
+    {id: 1, permanentAddress},
+    {id: 2, presentAddress},
+    {id: 3, permanentTelephone_no},
+    {id: 4, dateOfBirth},
+    {id: 5, presentTelephone_no},
+    {id: 6, height},
+    {id: 7, weight},
+    {id: 8, presentNationality},
+  ];
+  const setValue2 = event => {
+    setHeight(e);
+  };
+  const setValue3 = event => {
+    setWeight(e);
+  };
+  function handleChange(evt) {}
   return (
     <SafeAreaView style={styles.SafeAreaViewContainer}>
       <View>
-        {isPickerShow && (
+        {datePicker && (
+          <RNDateTimePicker
+            value={dateOfBirth}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={true}
+            onChange={OnDateSelected}
+            style={styles.datePicker}
+          />
+        )}
+        {/* {isPickerShow && (
           <DateTimePicker
             value={date}
             mode={'date'}
@@ -129,7 +180,7 @@ const Address = ({label, navigation}) => {
             maximumDate={new Date(Date.now())}
             minimumDate={new Date(1970, 0, 1)}
           />
-        )}
+        )} */}
         <View style={styles.header}>
           <TouchableOpacity onPress={pressHandler}>
             <Ionicons name="chevron-back" color="#23557F" size={30} />
@@ -145,27 +196,54 @@ const Address = ({label, navigation}) => {
         showsVerticalScrollIndicator={false}>
         <CustomFileInput
           label="Permanent Adress"
-          val={familyName}
-          setVal={setFamilyName}
+          val={permanentAddress}
+          setVal={setPermanentAddress}
+          onChange={handleChange}
         />
         <CustomFileInput
           label="Present Address"
-          val={fullName}
-          setVal={setFullName}
+          val={presentAddress}
+          setVal={setPresentAddress}
+          onChange={handleChange}
         />
         <CustomFileInput
           label="Permanent Telephone no."
-          val={maidenName}
-          setVal={setMaidenName}
+          val={permanentTelephone_no}
+          setVal={setPermanentTelephone_No}
+          onChange={handleChange}
         />
         <CustomFileInput
           label="Present telephone no."
-          val={dateOfBirth}
-          setVal={setDateOfBirth}
+          val={presentTelephone_no}
+          setVal={setPresentTelephone_No}
+          onChange={handleChange}
         />
-
-        {/* Display the selected date also triggers the date picker*/}
         <View
+          style={{
+            flexDirection: 'row',
+            marginTop: 20,
+            justifyContent: 'space-between',
+          }}>
+          {!datePicker && (
+            <View>
+              <View style={styles.pickedDateContainer}></View>
+              <TouchableOpacity
+                onPress={showDatePicker}
+                style={
+                  {flexDirection: 'row'}[(styles.button, styles.buttonOutline)]
+                }>
+                <Ionicons
+                  name="chevron-down-outline"
+                  size={24}
+                  color="#A0A0A0"
+                />
+                <Text style={styles.buttonOutlineText}>DATEOFBIRTH</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+        {/* Display the selected date also triggers the date picker*/}
+        {/* <View
           style={{
             flexDirection: 'row',
             marginTop: 20,
@@ -186,33 +264,52 @@ const Address = ({label, navigation}) => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </View> */}
         <CustomFileInput
           label="Present Nationality"
           val={presentNationality}
           setVal={setPresentNationality}
+          onChange={handleChange}
         />
+        <View>
+          <Text style={[styles.text, {marginTop: 20, paddingBottom: 10}]}>
+            Sex
+          </Text>
+          <DropDown value={clickedItem1} data={Sex} onSelect={onClick1} />
+        </View>
         <View
           style={{
             flexDirection: 'row',
             marginTop: 20,
             justifyContent: 'space-between',
           }}>
-          <View>
+          {/* <View>
             <Text>Sex</Text>
             <RadioGroup
               layout="row"
               radioButtons={radioButtons}
               onPress={onPressRadioButton}
             />
-          </View>
+          </View> */}
           <View>
             <Text style={styles.text}>Height</Text>
-            <TextInput style={styles.input} />
+            <TextInput
+              style={styles.input}
+              val={height}
+              setVal={setHeight}
+              // onChange={handleChange}
+              onChangeText={e => setHeight(e)}
+            />
           </View>
           <View>
             <Text style={styles.text}>Weight</Text>
-            <TextInput style={styles.input} />
+            <TextInput
+              style={styles.input}
+              val={weight}
+              setVal={setWeight}
+              // onChange={handleChange}
+              onChangeText={e => setWeight(e)}
+            />
           </View>
         </View>
         <View>
@@ -225,11 +322,13 @@ const Address = ({label, navigation}) => {
             onSelect={onSelect}
           />
         </View>
-        <CustomFileInput
+        {/* <CustomFileInput
           label="Present Address"
           val={fullName}
           setVal={setFullName}
-        />
+        /> */}
+
+        <Button onPress={presshandler2} title="Save me" />
       </ScrollView>
     </SafeAreaView>
   );
@@ -241,7 +340,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: colors.white,
-    paddingBottom: 30,
+    paddingBottom: 20,
   },
   header: {
     flexDirection: 'row',

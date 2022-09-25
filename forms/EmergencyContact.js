@@ -18,73 +18,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import RadioGroup from 'react-native-radio-buttons-group';
 import {DropDown} from '../Components';
 
-const radioButtonsData = [
-  {
-    id: '1',
-    label: <Text style={{color: '#212529'}}>{'Male'}</Text>,
-    value: 'option1',
-    color: '#F7F7F7',
-    selected: false,
-  },
-  {
-    id: '2',
-    label: <Text style={{color: '#212529'}}>{'Female'}</Text>,
-    value: 'option2',
-    color: '#F7F7F7',
-    selected: false,
-  },
-];
-const maritalStatusData = [
-  {
-    id: '1',
-    label: <Text style={{color: '#212529'}}>{'Yes'}</Text>,
-    value: 'option1',
-    color: '#F7F7F7',
-    selected: false,
-  },
-  {
-    id: '2',
-    label: <Text style={{color: '#212529'}}>{'No'}</Text>,
-    value: 'option2',
-    color: '#F7F7F7',
-    selected: false,
-  },
-];
-let maritalStatus = [
-  {
-    id: 1,
-    name: 'Single',
-  },
-  {
-    id: 2,
-    name: 'Married',
-  },
-  {
-    id: 3,
-    name: 'Separated',
-  },
-  {
-    id: 4,
-    name: 'Widow (er)',
-  },
-  {
-    id: 5,
-    name: 'Divorced',
-  },
-];
 const EmergencyContact = ({label, navigation, sublabel}) => {
   const pressHandler = () => {
     navigation.navigate('Home Screen');
   };
-  const [selectedItem, setSelectedItem] = useState(null);
-  const onSelect = item => {
-    setSelectedItem(item);
+  const presshandler2 = () => {
+    console.log(arrOfObj);
   };
-
-  const [radioButtons, setRadioButtons] = useState(radioButtonsData);
-  const [radioButton2, setRadioButtons2] = useState(maritalStatusData);
-  const [isPickerShow, setIsPickerShow] = useState(false);
-  const [date, setDate] = useState(new Date(Date.now()));
 
   function getValueofInput1() {
     console.log('Input is ' + employeeName);
@@ -92,45 +32,60 @@ const EmergencyContact = ({label, navigation, sublabel}) => {
   const showPicker = () => {
     setIsPickerShow(true);
   };
-
+  const [tok, setToke] = useState('');
   const onChange = (event, value) => {
     setDate(value);
     if (Platform.OS === 'android') {
       setIsPickerShow(false);
     }
   };
-  function onPressRadioButton(radioButtonsArray) {
-    setRadioButtons(radioButtonsArray);
-  }
-  function onPressRadioButton(radioButtonsArray) {
-    setRadioButtons2(radioButtonsArray);
-  }
+  // function onPressRadioButton(radioButtonsArray) {
+  //   setRadioButtons(radioButtonsArray);
+  // }
+  // function onPressRadioButton(radioButtonsArray) {
+  //   setRadioButtons2(radioButtonsArray);
+  // }
 
   //TextInput
   const [employeeName, setEmployeeName] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [maidenName, setMaidenName] = useState('');
-  // const [dateOfBirth, setDateOfBirth] = useState('');
-  const [placeOfBirth, setPlaceOfBirth] = useState('');
-  const [nationalityAtBirth, setNationalityAtBirth] = useState('');
-  // const [presentNationality, setPresentNationality] = useState('');
-  const [describe, setDescribe] = useState('');
+  const [jobTitle, setJobTitle] = useState('');
+  const [contactName_one, setcontactName_One] = useState('');
+  const [contactName_one_number, setContactName_One_Number] = useState('');
+  const [contactName_one_address, setContactName_One_Address] = useState('');
+  const [contactName_one_relationship, setContactName_One_Relationship] =
+    useState('');
+  const [contactName_two, setcontactName_Two] = useState('');
+  const [contactName_two_number, setContactName_Two_Number] = useState('');
+  const [contactName_two_address, setContactName_Two_Address] = useState('');
+  const [contactName_two_relationship, setContactName_Two_Relationship] =
+    useState('');
+  let arrOfObj = [
+    {id: 1, name: employeeName},
+    {id: 2, jobTitle},
+    {id: 3, contactName_one},
+    {id: 4, name: contactName_one_number},
+    {id: 5, name: contactName_one_address},
+    {id: 6, contactName_one_relationship},
+    {id: 7, contactName_two},
+    {id: 8, name: contactName_two_number},
+    {id: 9, name: contactName_two_address},
+    {id: 9, name: contactName_two_relationship},
+    // {id: 9, name: presentNationality},
+  ];
 
+  function handleChange(evt) {
+    setPhoneNumber({phoneNumber: evt.target.value});
+    setPlaceOfBirth({placeOfBirth: evt.target.value});
+    setNationalityAtBirth({nationalityAtBirth: evt.target.value});
+    // setPresentNationality({presentNationality: evt.target.value});
+    setHeight({height: evt.target.value});
+    // setGenderButtons({genderButtons: evt.target.value});
+
+    // setDateOfBirth({dateOfBirth: evt.target.value});
+  }
   return (
     <SafeAreaView style={styles.SafeAreaViewContainer}>
       <View>
-        {isPickerShow && (
-          <DateTimePicker
-            value={date}
-            mode={'date'}
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            is24Hour={true}
-            onChange={onChange}
-            style={styles.datePicker}
-            maximumDate={new Date(Date.now())}
-            minimumDate={new Date(1970, 0, 1)}
-          />
-        )}
         <View style={styles.header}>
           <TouchableOpacity onPress={pressHandler}>
             <Ionicons name="chevron-back" color="#23557F" size={30} />
@@ -148,22 +103,26 @@ const EmergencyContact = ({label, navigation, sublabel}) => {
         showsVerticalScrollIndicator={false}>
         <CustomFileInput
           label="Employee Name"
-          include
           val={employeeName}
           setVal={setEmployeeName}
+          onChange={handleChange}
         />
         <CustomFileInput
           label="Job Title"
-          // style={{color: '#212529'}}
-          val={fullName}
-          setVal={setFullName}
-          e33333
+          val={jobTitle}
+          setVal={setJobTitle}
+          onChange={handleChange}
         />
         <Text style={[styles.textD, {marginTop: 20}]}>
           In case of emergency please contact the following persons:
         </Text>
         <Text style={[styles.textA, {marginTop: 20}]}>Contact 1: </Text>
-        <CustomFileInput label="Name" val={maidenName} setVal={setMaidenName} />
+        <CustomFileInput
+          label="Name"
+          val={contactName_one}
+          setVal={setcontactName_One}
+          onChange={handleChange}
+        />
         {/* <CustomFileInput
           label="Date of Birth (Format: DD-MMM-YYYY)"
           val={dateOfBirth}
@@ -171,21 +130,29 @@ const EmergencyContact = ({label, navigation, sublabel}) => {
         /> */}
         <CustomFileInput
           label="Relationship with employee"
-          val={placeOfBirth}
-          setVal={setPlaceOfBirth}
+          val={contactName_one_relationship}
+          setVal={setContactName_One_Relationship}
+          onChange={handleChange}
         />
         <CustomFileInput
           label="Contacts Telephone Number"
-          val={nationalityAtBirth}
-          setVal={setNationalityAtBirth}
+          val={contactName_one_number}
+          setVal={setContactName_One_Number}
+          onChange={handleChange}
         />
         <CustomFileInput
           label="Contacts Address"
-          val={nationalityAtBirth}
-          setVal={setNationalityAtBirth}
+          val={contactName_one_address}
+          setVal={setContactName_One_Address}
+          onChange={handleChange}
         />
         <Text style={[styles.textA, {marginTop: 20}]}>Contact 2: </Text>
-        <CustomFileInput label="Name" val={maidenName} setVal={setMaidenName} />
+        <CustomFileInput
+          label="Name"
+          val={contactName_two}
+          setVal={setcontactName_Two}
+          onChange={handleChange}
+        />
         {/* <CustomFileInput
           label="Date of Birth (Format: DD-MMM-YYYY)"
           val={dateOfBirth}
@@ -193,25 +160,25 @@ const EmergencyContact = ({label, navigation, sublabel}) => {
         /> */}
         <CustomFileInput
           label="Relationship with employee"
-          val={placeOfBirth}
-          setVal={setPlaceOfBirth}
+          val={contactName_two_relationship}
+          setVal={setContactName_Two_Relationship}
+          onChange={handleChange}
         />
         <CustomFileInput
           label="Contacts Telephone Number"
-          val={nationalityAtBirth}
-          setVal={setNationalityAtBirth}
+          val={contactName_two_number}
+          setVal={setContactName_Two_Number}
+          onChange={handleChange}
         />
         <CustomFileInput
           label="Contacts Address"
-          val={nationalityAtBirth}
-          setVal={setNationalityAtBirth}
+          val={contactName_two_address}
+          setVal={setContactName_Two_Address}
+          onChange={handleChange}
         />
-        <CustomFileInput
-          label='If "yes", please describe. '
-          val={describe}
-          setVal={setDescribe}
-        />
-        <CustomDescInput />
+
+        {/* <CustomDescInput /> */}
+        <Button onPress={presshandler2} title="Save me" />
       </ScrollView>
     </SafeAreaView>
   );
@@ -251,13 +218,7 @@ const styles = StyleSheet.create({
     // marginTop: 20,
     // marginBottom: 10,
   },
-  pickedDateContainer: {
-    padding: 10,
-    backgroundColor: '#eee',
-    borderRadius: 4,
-    flexDirection: 'row',
-    width: 150,
-  },
+  
   pickedDate: {
     fontSize: 18,
     color: '#A0A0A0',
